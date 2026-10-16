@@ -1,0 +1,48 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true              # also allows /<service-name>/** automatically
+          lower-case-service-id: true
+      routes:
+        - id: restaurant-service
+          uri: lb://restaurant-service   # lb:// = look up the service in Eureka, no fixed port
+          predicates:
+            - Path=/restaurants/**
+        - id: menu-service
+          uri: lb://menu-service
+          predicates:
+            - Path=/menu/**
+        - id: customer-service
+          uri: lb://customer-service
+          predicates:
+            - Path=/customers/**
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/orders/**
+        - id: payment-service
+          uri: lb://payment-service
+          predicates:
+            - Path=/payments/**
+        - id: delivery-service
+          uri: lb://delivery-service
+          predicates:
+            - Path=/deliveries/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

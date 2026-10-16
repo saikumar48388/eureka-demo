@@ -1,0 +1,28 @@
+server:
+  port: 0                         # random port on every startup
+
+spring:
+  application:
+    name: restaurant-service      # name registered in Eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info      # Eureka dashboard links to /actuator/info
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: restaurant-service
+    description: Restaurant Service registered with Eureka
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    # unique id so several instances with random ports don't overwrite each other
+    instance-id: ${spring.application.name}:${random.value}

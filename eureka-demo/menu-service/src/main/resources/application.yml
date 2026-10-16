@@ -1,0 +1,27 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: menu-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: menu-service
+    description: Menu items of restaurants
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${random.value}
